@@ -17,15 +17,7 @@ class CreateCliqueHousehold extends StatelessWidget {
             ),
           );
         },
-        child: Container(
-          height: 96,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: const Color.fromRGBO(226, 233, 240, 1)),
-          alignment: Alignment.center,
-          child: const Text("Create Clique/Household"),
-        ),
+        child: Image.asset("assets/images/cliques_button.png"),
       ),
     );
   }

@@ -14,7 +14,12 @@ class ExpandedClique extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           width: double.infinity,
           height: MediaQuery.sizeOf(context).height * 0.3,
-          decoration: const BoxDecoration(color: Colors.blue),
+          decoration: const BoxDecoration(
+              color: Colors.blue,
+              image: DecorationImage(
+                  image: AssetImage(
+                      "assets/images/greg-rosenke-2OrOt0QyNDk-unsplash.jpg"),
+                  fit: BoxFit.cover)),
           child: Stack(
             children: [
               Align(
@@ -26,7 +31,7 @@ class ExpandedClique extends StatelessWidget {
                     child: const Icon(Icons.arrow_back)),
               ),
               Align(
-                  alignment: Alignment(-1, 0.55),
+                  alignment: Alignment(-1, 0.625),
                   child: Text("Clique Members")),
               Align(
                 alignment: const Alignment(0, 0.9),
