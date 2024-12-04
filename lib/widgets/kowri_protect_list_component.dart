@@ -76,9 +76,9 @@ class KowriProtectListComponent extends StatelessWidget {
                         SlideEffect(duration: duration),
                         FadeEffect(duration: duration),
                       ],
-                      child: KowriProtectItem(
-                          insuranceData: insuranceData[index],
-                          context: context));
+                      child: ListTile(
+                        leading: Text("1"),
+                      ));
                 },
               ),
             ],

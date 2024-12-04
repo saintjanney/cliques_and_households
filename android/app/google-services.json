@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "567376743749",
+    "project_id": "cliques-and-households",
+    "storage_bucket": "cliques-and-households.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567376743749:android:3346786a981a1bf0e6c22c",
+        "android_client_info": {
+          "package_name": "com.example.ap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmHh1yV5S7c91-927YgIh8a7J0i_tU9bQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

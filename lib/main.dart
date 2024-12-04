@@ -2,8 +2,14 @@ import 'package:cliques_and_households/providers/gorup_service.dart';
 import 'package:cliques_and_households/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<GorupService>(create: (context) => GorupService()),
   ], child: const MyApp()));
