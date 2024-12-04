@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAmHh1yV5S7c91-927YgIh8a7J0i_tU9bQ',
-    appId: '1:567376743749:android:3346786a981a1bf0e6c22c',
+    appId: '1:567376743749:android:a09969bfc99b4df2e6c22c',
     messagingSenderId: '567376743749',
     projectId: 'cliques-and-households',
     storageBucket: 'cliques-and-households.firebasestorage.app',
