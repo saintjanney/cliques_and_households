@@ -23,19 +23,20 @@ class Group {
     return Group(
       groupId: json['groupId'] as String,
       groupName: json['groupName'] as String,
-      members: (json['members'] as List<dynamic>)
-          .map((member) => User.fromJson(member as Map<String, dynamic>))
-          .toList(),
+      members: (json['users'] as List<dynamic>).map((member) {
+        print(member);
+        return User.fromJson(member as Map<String, dynamic>);
+      }).toList(),
       utilities: json['utilities'] != null
-          ? (json['utilities'] as List<dynamic>)
-              .map((utility) =>
-                  Utility.fromJson(utility as Map<String, dynamic>))
-              .toList()
+          ? (json['utilities'] as List<dynamic>).map((utility) {
+              print(utility);
+              return Utility.fromJson(utility as Map<String, dynamic>);
+            }).toList()
           : null,
-      transactions: (json['transactions'] as List<dynamic>)
-          .map((transaction) =>
-              Transaction.fromJson(transaction as Map<String, dynamic>))
-          .toList(),
+      transactions: (json['transactions'] as List<dynamic>).map((transaction) {
+        print(transaction);
+        return Transaction.fromJson(transaction as Map<String, dynamic>);
+      }).toList(),
     );
   }
 

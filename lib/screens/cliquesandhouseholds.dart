@@ -1,5 +1,6 @@
 import 'package:cliques_and_households/models/group_model.dart';
 import 'package:cliques_and_households/models/group_transactions.dart';
+import 'package:cliques_and_households/providers/group_service.dart';
 import 'package:cliques_and_households/widgets/groupCard.dart';
 import 'package:cliques_and_households/screens/expanded_clique.dart';
 import 'package:cliques_and_households/screens/expanded_household.dart';
@@ -15,47 +16,48 @@ class CliquesAndHousholds extends StatefulWidget {
 }
 
 class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
-  List<Group> groups = [
-    Group(
-        groupId: "groupId",
-        members: [],
-        transactions: [
-          Transaction(
-              transactionId: "transactionId",
-              groupId: "groupId",
-              description: "Some description goes here",
-              timestamp: "timestamp",
-              amount: "100",
-              contributions: {
-                "userId": 100,
-              }),
-          Transaction(
-              transactionId: "transactionId",
-              groupId: "groupId",
-              description: "Some description goes here",
-              timestamp: "timestamp",
-              amount: "100",
-              contributions: {})
-        ],
-        groupName: "Rock On"),
-    Group(
-        groupId: "groupId",
-        members: [],
-        groupName: "My Home",
-        transactions: [],
-        utilities: List.empty())
-  ];
+  final GroupService groupService = GroupService();
+  // List<Group> groups = [
+  //   Group(
+  //       groupId: "groupId",
+  //       members: [],
+  //       transactions: [
+  //         Transaction(
+  //             transactionId: "transactionId",
+  //             groupId: "groupId",
+  //             description: "Some description goes here",
+  //             timestamp: "timestamp",
+  //             amount: "100",
+  //             contributions: {
+  //               "userId": 100,
+  //             }),
+  //         Transaction(
+  //             transactionId: "transactionId",
+  //             groupId: "groupId",
+  //             description: "Some description goes here",
+  //             timestamp: "timestamp",
+  //             amount: "100",
+  //             contributions: {})
+  //       ],
+  //       groupName: "Rock On"),
+  //   Group(
+  //       groupId: "groupId",
+  //       members: [],
+  //       groupName: "My Home",
+  //       transactions: [],
+  //       utilities: List.empty())
+  // ];
 
   @override
   void initState() {
     super.initState();
   }
 
-  List<Group> get cliques =>
-      groups.where((group) => group.utilities == null).toList();
+  // List<Group> get cliques =>
+  //     groups.where((group) => group.utilities == null).toList();
 
-  List<Group> get households =>
-      groups.where((group) => group.utilities != null).toList();
+  // List<Group> get households =>
+  //     groups.where((group) => group.utilities != null).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -91,98 +93,114 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.02,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text("Cliques"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: cliques.isEmpty
-                  ? Center(
-                      child: Container(
-                          alignment: Alignment.center,
-                          height: MediaQuery.sizeOf(context).height * 0.25,
-                          child: const Text("No cliques")))
-                  : GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8.0,
-                        mainAxisSpacing: 16.0,
-                        childAspectRatio: 1.09,
-                      ),
-                      itemCount: cliques.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        ExpandedClique(
-                                      group: cliques[index],
-                                    ),
+      body: FutureBuilder<List<Group>>(
+          future: groupService.getGroups(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            List<Group> groups = snapshot.data ?? [];
+            List<Group> cliques =
+                groups.where((group) => group.utilities == null).toList();
+            List<Group> households =
+                groups.where((group) => group.utilities != null).toList();
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.02,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text("Cliques"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: cliques.isEmpty
+                        ? Center(
+                            child: Container(
+                                alignment: Alignment.center,
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.25,
+                                child: const Text("No cliques")))
+                        : GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8.0,
+                              mainAxisSpacing: 16.0,
+                              childAspectRatio: 1.09,
+                            ),
+                            itemCount: cliques.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (BuildContext context) =>
+                                              ExpandedClique(
+                                            group: cliques[index],
+                                          ),
+                                        ));
+                                  },
+                                  child: GroupCard(
+                                    group: cliques[index],
                                   ));
                             },
-                            child: GroupCard(
-                              group: cliques[index],
-                            ));
-                      },
-                    ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text("Households"),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: households.isEmpty
-                  ? Center(
-                      child: Container(
-                          alignment: Alignment.center,
-                          height: MediaQuery.sizeOf(context).height * 0.25,
-                          child: const Text("No households")))
-                  : GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 8.0,
-                        mainAxisSpacing: 16.0,
-                        childAspectRatio: 1.09,
-                      ),
-                      itemCount: households.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        const ExpandedHousehold(),
+                          ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text("Households"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: households.isEmpty
+                        ? Center(
+                            child: Container(
+                                alignment: Alignment.center,
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.25,
+                                child: const Text("No households")))
+                        : GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8.0,
+                              mainAxisSpacing: 16.0,
+                              childAspectRatio: 1.09,
+                            ),
+                            itemCount: households.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (BuildContext context) =>
+                                              const ExpandedHousehold(),
+                                        ));
+                                  },
+                                  child: GroupCard(
+                                    group: households[index],
                                   ));
                             },
-                            child: GroupCard(
-                              group: households[index],
-                            ));
-                      },
-                    ),
-            ),
-          ],
-        ),
-      ),
+                          ),
+                  ),
+                ],
+              ),
+            );
+          }),
     );
   }
 }
