@@ -19,6 +19,19 @@ class GroupService {
     }
   }
 
+  // Create a new group
+  Future<void> createTransaction(t.Transaction transaction) async {
+    try {
+      await _firestore
+          .collection('transaction')
+          .doc(transaction.transactionId)
+          .set(transaction.toJson());
+      print("Group created successfully!");
+    } catch (e) {
+      print("Error creating group: $e");
+    }
+  }
+
   Future<User> fetchMember(String id) async {
     try {
       return _firestore
@@ -124,4 +137,5 @@ class GroupService {
       print("Error deleting group: $e");
     }
   }
+
 }
