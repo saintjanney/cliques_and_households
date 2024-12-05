@@ -86,9 +86,13 @@ class GroupService {
         List<t.Transaction> transactions = [];
         List<Utility>? utilities;
         for (var member in doc.data()['users']) {
-          print("called");
-          fetchMember(member).then((value) => members.add(value!));
+          print(doc.data()['users']);
+          await fetchMember(member).then((value) {
+         
+            members.add(value!);
+          });
         }
+        print(members.length);
 
         for (var transaction in doc.data()['transactions']) {
           transactions.add(await fetchTransaction(transaction));
@@ -108,9 +112,7 @@ class GroupService {
             utilities: utilities,
             transactions: transactions));
 
-        toReturn.forEach((element) {
-          print(element.members.length);
-        });
+  
       }
       return toReturn;
     } catch (e) {
