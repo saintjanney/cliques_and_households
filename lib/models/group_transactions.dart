@@ -26,8 +26,9 @@ class Transaction {
       description: json['description'] as String,
       timestamp: json['timestamp'] as String,
       amount: json['amount'] as String,
-      contributions: (json['contributions'] as Map<String, dynamic>)
-          .map((key, value) => MapEntry(key, value as double)),
+      contributions: {}
+      // contributions: (json['contributions'] as Map<String, dynamic>)
+      //     .map((key, value) => MapEntry(key, value as double)),
     );
   }
 
