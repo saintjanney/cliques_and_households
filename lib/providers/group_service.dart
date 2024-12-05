@@ -43,6 +43,7 @@ class GroupService {
         if (doc.docs.isEmpty) {
           return null;
         }
+
         return User.fromJson(doc.docs.first.data() as Map<String, dynamic>);
       });
     } catch (e) {
@@ -85,6 +86,7 @@ class GroupService {
         List<t.Transaction> transactions = [];
         List<Utility>? utilities;
         for (var member in doc.data()['users']) {
+          print("called");
           fetchMember(member).then((value) => members.add(value!));
         }
 
@@ -105,7 +107,10 @@ class GroupService {
             members: members,
             utilities: utilities,
             transactions: transactions));
-        print(doc.data());
+
+        toReturn.forEach((element) {
+          print(element.members.length);
+        });
       }
       return toReturn;
     } catch (e) {

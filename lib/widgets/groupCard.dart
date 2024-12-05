@@ -21,7 +21,7 @@ class _GroupCardState extends State<GroupCard> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
+    print(widget.group.members.length);
     return Container(
       width: MediaQuery.of(context).size.width * 0.45,
       padding:
