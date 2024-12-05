@@ -1,8 +1,8 @@
-import 'package:cliques_and_households/screens/candhs.dart';
+import 'package:cliques_and_households/screens/cliquesandhouseholds.dart';
 import 'package:flutter/material.dart';
 
-class CreateCliqueHousehold extends StatelessWidget {
-  const CreateCliqueHousehold({super.key});
+class CliqueBanner extends StatelessWidget {
+  const CliqueBanner({super.key});
 
   @override
   Widget build(BuildContext context) {

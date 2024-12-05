@@ -1,7 +1,9 @@
 import 'package:cliques_and_households/models/clique.dart';
 import 'package:cliques_and_households/models/household.dart';
 import 'package:cliques_and_households/screens/account_card.dart';
-import 'package:cliques_and_households/screens/create_clique_household.dart';
+import 'package:cliques_and_households/screens/expanded_clique.dart';
+import 'package:cliques_and_households/screens/expanded_household.dart';
+import 'package:cliques_and_households/widgets/clique_banner.dart';
 import 'package:cliques_and_households/screens/create_group.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -88,7 +90,16 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
                       ),
                       itemCount: cliques.length,
                       itemBuilder: (context, index) {
-                        return AccountCard();
+                        return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (BuildContext context) =>
+                                        const ExpandedClique(),
+                                  ));
+                            },
+                            child: AccountCard());
                       },
                     ),
             ),
@@ -117,7 +128,16 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
                       ),
                       itemCount: households.length,
                       itemBuilder: (context, index) {
-                        return AccountCard();
+                        return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (BuildContext context) =>
+                                        const ExpandedHousehold(),
+                                  ));
+                            },
+                            child: AccountCard());
                       },
                     ),
             ),

@@ -1,5 +1,5 @@
 import 'package:cliques_and_households/screens/balanceqrcodecard.dart';
-import 'package:cliques_and_households/screens/create_clique_household.dart';
+import 'package:cliques_and_households/widgets/clique_banner.dart';
 import 'package:cliques_and_households/screens/home_top_bar.dart';
 import 'package:cliques_and_households/screens/recent_transactions.dart';
 import 'package:cliques_and_households/widgets/kowri_options.dart';
@@ -28,7 +28,7 @@ class Home extends StatelessWidget {
                 SizedBox(
                   height: 40,
                 ),
-                CreateCliqueHousehold(),
+                CliqueBanner(),
                 SizedBox(
                   height: 40,
                 ),

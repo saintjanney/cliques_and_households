@@ -2,8 +2,8 @@ import 'package:cliques_and_households/widgets/custom_sliver_appbar.dart';
 import 'package:cliques_and_households/widgets/kowri_protect_list_component.dart';
 import 'package:flutter/material.dart';
 
-class ExpandedClique extends StatelessWidget {
-  const ExpandedClique({super.key});
+class ExpandedHousehold extends StatelessWidget {
+  const ExpandedHousehold({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ExpandedClique extends StatelessWidget {
               ),
               Align(
                   alignment: Alignment(-1, 0.625),
-                  child: Text("Clique Members")),
+                  child: Text("Household Members")),
               Align(
                 alignment: const Alignment(0, 0.9),
                 child: Row(
