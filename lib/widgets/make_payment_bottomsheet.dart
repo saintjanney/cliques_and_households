@@ -33,6 +33,7 @@ class _MakePaymentBottomsheetState extends State<MakePaymentBottomsheet> {
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.sizeOf(context).width * 0.06),
               child: CustomTextField(
+                controller: TextEditingController(),
                 hint: "Who are you paying to?",
               ),
             ),
@@ -43,6 +44,7 @@ class _MakePaymentBottomsheetState extends State<MakePaymentBottomsheet> {
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.sizeOf(context).width * 0.06),
               child: CustomTextField(
+                controller: TextEditingController(),
                 hint: "Amount",
               ),
             ),
@@ -137,6 +139,7 @@ class _MakePaymentBottomsheetState extends State<MakePaymentBottomsheet> {
           SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.3,
               child: CustomTextField(
+                controller: TextEditingController(),
                 isPercentage: true,
               ))
         ],

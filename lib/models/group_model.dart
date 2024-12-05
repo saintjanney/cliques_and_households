@@ -24,7 +24,6 @@ class Group {
       groupId: json['groupId'] as String,
       groupName: json['groupName'] as String,
       members: (json['users'] as List<dynamic>).map((member) {
-        print(member);
         return User.fromJson(member as Map<String, dynamic>);
       }).toList(),
       utilities: json['utilities'] != null
@@ -45,7 +44,7 @@ class Group {
     return {
       'groupId': groupId,
       'groupName': groupName,
-      'members': members.map((member) => member.toJson()).toList(),
+      'users': members.map((member) => member.userId).toList(),
       'utilities': utilities?.map((utility) => utility.toJson()).toList(),
       'transactions':
           transactions.map((transaction) => transaction.toJson()).toList(),

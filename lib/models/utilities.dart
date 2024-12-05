@@ -10,16 +10,16 @@ class Utility {
   // From JSON factory method
   factory Utility.fromJson(Map<String, dynamic> json) {
     return Utility(
-      id: json['id'] as String,
-      name: json['name'] as String,
+      id: json['utilityId'] as String,
+      name: json['utilityName'] as String,
     );
   }
 
   // To JSON method
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
+      'utilityId': id,
+      'utilityName': name,
     };
   }
 }

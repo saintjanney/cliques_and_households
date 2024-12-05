@@ -1,6 +1,7 @@
 import 'package:cliques_and_households/models/group_model.dart';
 import 'package:cliques_and_households/models/users.dart';
 import 'package:cliques_and_households/models/group_transactions.dart' as t;
+import 'package:cliques_and_households/models/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupService {
@@ -32,18 +33,35 @@ class GroupService {
     }
   }
 
-  Future<User> fetchMember(String id) async {
+  Future<List<User>> fetchMembers() async {
+    try {
+      return _firestore.collection('users').get().then((doc) {
+        return doc.docs
+            .map((e) => User.fromJson(e.data() as Map<String, dynamic>))
+            .toList();
+      });
+    } catch (e) {
+      print("Error fetching members: $e");
+      return [];
+    }
+  }
+
+  Future<User?> fetchMember(String id) async {
     try {
       return _firestore
           .collection('users')
           .where("userId", isEqualTo: id)
           .get()
           .then((doc) {
+        if (doc.docs.isEmpty) {
+          return null;
+        }
+
         return User.fromJson(doc.docs.first.data() as Map<String, dynamic>);
       });
     } catch (e) {
       print("Error fetching member: $e");
-      return User(userId: '', name: '', balance: 0, groups: []);
+      return null;
     }
   }
 
@@ -72,27 +90,39 @@ class GroupService {
 
   Future<List<Group>> getGroups() async {
     List<Group> toReturn = [];
-    List<User> members = [];
-    List<t.Transaction> transactions = [];
 
     try {
       QuerySnapshot<Map<String, dynamic>> snapshot =
           await _firestore.collection('groups').get();
       for (var doc in snapshot.docs) {
+        List<User> members = [];
+        List<t.Transaction> transactions = [];
+        List<Utility>? utilities;
         for (var member in doc.data()['users']) {
-          members.add(await fetchMember(member));
+          print(doc.data()['users']);
+          await fetchMember(member).then((value) {
+            members.add(value!);
+          });
         }
+        print(members.length);
 
         for (var transaction in doc.data()['transactions']) {
           transactions.add(await fetchTransaction(transaction));
+        }
+
+        if (doc.data()['utilities'] != null) {
+          utilities = (doc.data()['utilities'] as List<dynamic>)
+              .map((utility) =>
+                  Utility.fromJson(utility as Map<String, dynamic>))
+              .toList();
         }
 
         toReturn.add(Group(
             groupId: doc.data()['groupId'],
             groupName: doc.data()['groupName'],
             members: members,
+            utilities: utilities,
             transactions: transactions));
-        print(doc.data());
       }
       return toReturn;
     } catch (e) {
@@ -100,18 +130,6 @@ class GroupService {
       return [];
     }
   }
-
-  // Future<List<Group>> getGroups() async {
-  //   try {
-  //     QuerySnapshot snapshot = await _firestore.collection('groups').get();
-  //     return snapshot.docs
-  //         .map((doc) => Group.fromJson(doc.data() as Map<String, dynamic>))
-  //         .toList();
-  //   } catch (e) {
-  //     print("Error fetching groups: $e");
-  //     return [];
-  //   }
-  // }
 
   Future<Group?> getGroup(String groupId) async {
     try {
@@ -137,5 +155,4 @@ class GroupService {
       print("Error deleting group: $e");
     }
   }
-
 }

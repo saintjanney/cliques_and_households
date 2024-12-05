@@ -13,6 +13,7 @@ class User {
 
   // From JSON factory method
   factory User.fromJson(Map<String, dynamic> json) {
+    
     return User(
       userId: json['userId'] as String,
       name: json['name'] as String,
