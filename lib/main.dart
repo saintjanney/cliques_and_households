@@ -1,4 +1,4 @@
-import 'package:cliques_and_households/providers/gorup_service.dart';
+import 'package:cliques_and_households/providers/group_service.dart';
 import 'package:cliques_and_households/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
