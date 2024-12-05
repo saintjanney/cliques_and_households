@@ -1,6 +1,6 @@
 import 'package:cliques_and_households/models/clique.dart';
 import 'package:cliques_and_households/models/household.dart';
-import 'package:cliques_and_households/screens/account_card.dart';
+import 'package:cliques_and_households/widgets/groupCard.dart';
 import 'package:cliques_and_households/screens/expanded_clique.dart';
 import 'package:cliques_and_households/screens/expanded_household.dart';
 import 'package:cliques_and_households/widgets/clique_banner.dart';
@@ -99,7 +99,7 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
                                         const ExpandedClique(),
                                   ));
                             },
-                            child: AccountCard());
+                            child: GroupCard());
                       },
                     ),
             ),
@@ -137,7 +137,7 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
                                         const ExpandedHousehold(),
                                   ));
                             },
-                            child: AccountCard());
+                            child: GroupCard());
                       },
                     ),
             ),
