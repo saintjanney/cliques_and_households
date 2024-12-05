@@ -33,7 +33,6 @@ class GroupService {
     }
   }
 
-
   Future<List<User>> fetchMembers() async {
     try {
       return _firestore.collection('users').get().then((doc) {
@@ -47,22 +46,7 @@ class GroupService {
     }
   }
 
-
-  // Create a new group
-  Future<void> createTransaction(t.Transaction transaction) async {
-    try {
-      await _firestore
-          .collection('transaction')
-          .doc(transaction.transactionId)
-          .set(transaction.toJson());
-      print("Group created successfully!");
-    } catch (e) {
-      print("Error creating group: $e");
-    }
-  }
-
   Future<User?> fetchMember(String id) async {
-
     try {
       return _firestore
           .collection('users')
@@ -117,7 +101,6 @@ class GroupService {
         for (var member in doc.data()['users']) {
           print(doc.data()['users']);
           await fetchMember(member).then((value) {
-         
             members.add(value!);
           });
         }
@@ -140,7 +123,6 @@ class GroupService {
             members: members,
             utilities: utilities,
             transactions: transactions));
-
       }
       return toReturn;
     } catch (e) {
@@ -173,5 +155,4 @@ class GroupService {
       print("Error deleting group: $e");
     }
   }
-
 }
