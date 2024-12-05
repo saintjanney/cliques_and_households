@@ -19,6 +19,19 @@ class GroupService {
     }
   }
 
+  Future<List<User>> fetchMembers() async {
+    try {
+      return _firestore.collection('users').get().then((doc) {
+        return doc.docs
+            .map((e) => User.fromJson(e.data() as Map<String, dynamic>))
+            .toList();
+      });
+    } catch (e) {
+      print("Error fetching members: $e");
+      return [];
+    }
+  }
+
   Future<User?> fetchMember(String id) async {
     try {
       return _firestore
@@ -26,9 +39,9 @@ class GroupService {
           .where("userId", isEqualTo: id)
           .get()
           .then((doc) {
-            if (doc.docs.isEmpty) {
-              return null;
-            }
+        if (doc.docs.isEmpty) {
+          return null;
+        }
         return User.fromJson(doc.docs.first.data() as Map<String, dynamic>);
       });
     } catch (e) {
