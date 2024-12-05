@@ -1,5 +1,8 @@
+import 'package:cliques_and_households/providers/aux_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:provider/provider.dart';
 
 class BalanceQrCodeCard extends StatelessWidget {
   final bool showBalance;
@@ -11,33 +14,42 @@ class BalanceQrCodeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 140,
-      width: double.infinity,
-      decoration: _boxDecoration(context),
-      padding: const EdgeInsets.symmetric(horizontal: 17),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(flex: 2, child: _buildBalanceReady(context)),
-          SizedBox(
-            height: 81.5,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: VerticalDivider(
-                color: Theme.of(context).dividerColor,
-                thickness: 1,
+    return Consumer<AuxProvider>(builder: (conext, auxProvider, _) {
+      return Container(
+        height: 140,
+        width: double.infinity,
+        decoration: _boxDecoration(context),
+        padding: const EdgeInsets.symmetric(horizontal: 17),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: auxProvider.getBalance(auxProvider.userID!),
+                builder: (context, snapshot) {
+                  return Expanded(
+                      flex: 2,
+                      child: _buildBalanceReady(context,
+                          snapshot.data!.docs[0]['balance'].toString()));
+                }),
+            SizedBox(
+              height: 81.5,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: VerticalDivider(
+                  color: Theme.of(context).dividerColor,
+                  thickness: 1,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: _buildQrCodeContent(context),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              flex: 1,
+              child: _buildQrCodeContent(context),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   BoxDecoration _boxDecoration(BuildContext context) {
@@ -64,7 +76,7 @@ class BalanceQrCodeCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBalanceReady(BuildContext context) {
+  Widget _buildBalanceReady(BuildContext context, String balance) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +104,7 @@ class BalanceQrCodeCard extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'GHS ***',
+          'GHS $balance',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 15),

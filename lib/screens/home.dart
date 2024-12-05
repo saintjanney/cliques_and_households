@@ -46,7 +46,7 @@ class Home extends StatelessWidget {
 
   Widget _buildBalanceQrCodeCard() {
     return const BalanceQrCodeCard(
-      showBalance: false,
+      showBalance: true,
     );
   }
 }
