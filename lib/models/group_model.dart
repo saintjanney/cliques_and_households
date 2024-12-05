@@ -45,7 +45,7 @@ class Group {
     return {
       'groupId': groupId,
       'groupName': groupName,
-      'members': members.map((member) => member.toJson()).toList(),
+      'users': members.map((member) => member.userId).toList(),
       'utilities': utilities?.map((utility) => utility.toJson()).toList(),
       'transactions':
           transactions.map((transaction) => transaction.toJson()).toList(),

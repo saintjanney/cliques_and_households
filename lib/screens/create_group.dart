@@ -32,6 +32,14 @@ class _CreateGroupState extends State<CreateGroup> {
 
   var uuid = Uuid();
 
+  List<String> getIds() {
+    List<String> ids = [];
+    members.forEach((element) {
+      ids.add(element.userId);
+    });
+    return ids;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AuxProvider>(builder: (context, auxProvider, _) {
