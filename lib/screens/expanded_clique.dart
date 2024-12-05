@@ -1,3 +1,4 @@
+import 'package:cliques_and_households/models/group_model.dart';
 import 'package:cliques_and_households/widgets/custom_button.dart';
 import 'package:cliques_and_households/widgets/custom_sliver_appbar.dart';
 import 'package:cliques_and_households/widgets/kowri_protect_list_component.dart';
@@ -5,7 +6,8 @@ import 'package:cliques_and_households/widgets/make_payment_bottomsheet.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedClique extends StatelessWidget {
-  const ExpandedClique({super.key});
+  final Group group;
+  const ExpandedClique({super.key, required this.group});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class ExpandedClique extends StatelessWidget {
           decoration: const BoxDecoration(
               color: Colors.blue,
               image: DecorationImage(
-                opacity: 0.8,
+                  opacity: 0.8,
                   image: AssetImage("assets/images/clique.jpg"),
                   fit: BoxFit.cover)),
           child: Stack(
@@ -35,10 +37,10 @@ class ExpandedClique extends StatelessWidget {
                       color: Colors.white,
                     )),
               ),
-              const Align(
+              Align(
                   alignment: Alignment(-1, 0.625),
                   child: Text(
-                    "Clique Members",
+                    group.groupName,
                     style: TextStyle(color: Colors.white),
                   )),
               Align(
@@ -85,12 +87,32 @@ class ExpandedClique extends StatelessWidget {
         ),
         Expanded(
           child: ListView.builder(
-              itemCount: 10,
+              itemCount: group.transactions.length,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
-                return ListTile(
+                return ExpansionTile(
                   leading: Text("${index + 1}"),
+                  subtitle: Text(group.transactions[index].description),
+                  trailing: Text(group.transactions[index].amount.toString()),
                   title: const Text("Saint"),
+                  expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (String s
+                        in group.transactions[index].contributions.keys)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text(s),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(group.transactions[index].contributions[s]
+                                .toString())
+                          ],
+                        ),
+                      )
+                  ],
                 );
               }),
         ),

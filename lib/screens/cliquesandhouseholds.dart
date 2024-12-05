@@ -1,13 +1,11 @@
-import 'package:cliques_and_households/models/clique.dart';
 import 'package:cliques_and_households/models/group_model.dart';
-import 'package:cliques_and_households/models/household.dart';
+import 'package:cliques_and_households/models/group_transactions.dart';
 import 'package:cliques_and_households/widgets/groupCard.dart';
 import 'package:cliques_and_households/screens/expanded_clique.dart';
 import 'package:cliques_and_households/screens/expanded_household.dart';
 import 'package:cliques_and_households/widgets/clique_banner.dart';
 import 'package:cliques_and_households/screens/create_group.dart';
 import 'package:flutter/material.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class CliquesAndHousholds extends StatefulWidget {
   const CliquesAndHousholds({super.key});
@@ -21,7 +19,24 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
     Group(
         groupId: "groupId",
         members: [],
-        transactions: [],
+        transactions: [
+          Transaction(
+              transactionId: "transactionId",
+              groupId: "groupId",
+              description: "Some description goes here",
+              timestamp: "timestamp",
+              amount: "100",
+              contributions: {
+                "userId": 100,
+              }),
+          Transaction(
+              transactionId: "transactionId",
+              groupId: "groupId",
+              description: "Some description goes here",
+              timestamp: "timestamp",
+              amount: "100",
+              contributions: {})
+        ],
         groupName: "Rock On"),
     Group(
         groupId: "groupId",
@@ -114,7 +129,9 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
                                   context,
                                   MaterialPageRoute<void>(
                                     builder: (BuildContext context) =>
-                                        const ExpandedClique(),
+                                        ExpandedClique(
+                                      group: cliques[index],
+                                    ),
                                   ));
                             },
                             child: GroupCard(
