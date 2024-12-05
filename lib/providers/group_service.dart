@@ -19,18 +19,21 @@ class GroupService {
     }
   }
 
-  Future<User> fetchMember(String id) async {
+  Future<User?> fetchMember(String id) async {
     try {
       return _firestore
           .collection('users')
           .where("userId", isEqualTo: id)
           .get()
           .then((doc) {
+            if (doc.docs.isEmpty) {
+              return null;
+            }
         return User.fromJson(doc.docs.first.data() as Map<String, dynamic>);
       });
     } catch (e) {
       print("Error fetching member: $e");
-      return User(userId: '', name: '', balance: 0, groups: []);
+      return null;
     }
   }
 
@@ -67,7 +70,7 @@ class GroupService {
           await _firestore.collection('groups').get();
       for (var doc in snapshot.docs) {
         for (var member in doc.data()['users']) {
-          members.add(await fetchMember(member));
+          fetchMember(member).then((value) => members.add(value!));
         }
 
         for (var transaction in doc.data()['transactions']) {
@@ -87,18 +90,6 @@ class GroupService {
       return [];
     }
   }
-
-  // Future<List<Group>> getGroups() async {
-  //   try {
-  //     QuerySnapshot snapshot = await _firestore.collection('groups').get();
-  //     return snapshot.docs
-  //         .map((doc) => Group.fromJson(doc.data() as Map<String, dynamic>))
-  //         .toList();
-  //   } catch (e) {
-  //     print("Error fetching groups: $e");
-  //     return [];
-  //   }
-  // }
 
   Future<Group?> getGroup(String groupId) async {
     try {

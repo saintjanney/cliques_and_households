@@ -1,4 +1,5 @@
 import 'package:cliques_and_households/models/group_model.dart';
+import 'package:cliques_and_households/models/users.dart';
 import 'package:cliques_and_households/providers/group_service.dart';
 import 'package:cliques_and_households/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,11 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
+  final GroupService groupService = GroupService();
   int _selectedIndex = 0;
   late TextEditingController _groupNameController;
   late TextEditingController _searchController;
+  List<User> members = [];
 
   @override
   void initState() {
@@ -26,7 +29,7 @@ class _CreateGroupState extends State<CreateGroup> {
   }
 
   var uuid = Uuid();
-  final GroupService groupService = GroupService();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,13 +79,50 @@ class _CreateGroupState extends State<CreateGroup> {
             const SizedBox(
               height: 24,
             ),
-            CustomTextField(hint: "Group Name"),
+            CustomTextField(
+                hint: "Group Name", controller: _groupNameController),
             const SizedBox(
               height: 24,
             ),
             CustomTextField(
               hint: "Search group name by number",
-              isLookup: true,
+              controller: _searchController,
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  // search for group
+                  if (_searchController.text.isNotEmpty) {
+                    groupService
+                        .fetchMember(_searchController.text)
+                        .then((onValue) {
+                      if (onValue != null) {
+                        print("here");
+                        setState(() {
+                          members.add(onValue);
+                        });
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Error"),
+                                content: Text(
+                                    "User '${_searchController.text}' not found"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        _searchController.clear();
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("OK"))
+                                ],
+                              );
+                            });
+                      }
+                    });
+                  }
+                },
+              ),
             ),
             const SizedBox(
               height: 24,
@@ -97,7 +137,7 @@ class _CreateGroupState extends State<CreateGroup> {
                       decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(12)),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.person),
                           SizedBox(
@@ -135,7 +175,8 @@ class _CreateGroupState extends State<CreateGroup> {
                       groupId: uuid.v4(),
                       groupName: _groupNameController.text,
                       transactions: [],
-                      members: []));
+                      utilities: _selectedIndex == 0 ? null : [],
+                      members: members));
                 }
               },
               child: Container(
