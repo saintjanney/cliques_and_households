@@ -4,6 +4,7 @@ import 'package:cliques_and_households/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateGroup extends StatefulWidget {
   const CreateGroup({super.key});
@@ -13,6 +14,18 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
+  int _selectedIndex = 0;
+  late TextEditingController _groupNameController;
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _groupNameController = TextEditingController();
+    _searchController = TextEditingController();
+  }
+
+  var uuid = Uuid();
   final GroupService groupService = GroupService();
   @override
   Widget build(BuildContext context) {
@@ -41,7 +54,7 @@ class _CreateGroupState extends State<CreateGroup> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ToggleSwitch(
                 minWidth: double.infinity,
-                initialLabelIndex: 1,
+                initialLabelIndex: _selectedIndex,
                 cornerRadius: 20.0,
                 activeFgColor: Colors.white,
                 inactiveBgColor: Colors.grey,
@@ -54,7 +67,9 @@ class _CreateGroupState extends State<CreateGroup> {
                   [Colors.green],
                 ],
                 onToggle: (index) {
-                  print('switched to: $index');
+                  setState(() {
+                    _selectedIndex = index!;
+                  });
                 },
               ),
             ),
@@ -98,11 +113,30 @@ class _CreateGroupState extends State<CreateGroup> {
             const Spacer(),
             InkWell(
               onTap: () {
-                groupService.createGroup(Group(
-                    groupId: "1",
-                    groupName: "Saints",
-                    transactions: [],
-                    members: []));
+                if (_groupNameController.text.isEmpty) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Error"),
+                          content: const Text("Group name cannot be empty"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("OK"))
+                          ],
+                        );
+                      });
+                  return;
+                } else {
+                  groupService.createGroup(Group(
+                      groupId: uuid.v4(),
+                      groupName: _groupNameController.text,
+                      transactions: [],
+                      members: []));
+                }
               },
               child: Container(
                 height: 48,
