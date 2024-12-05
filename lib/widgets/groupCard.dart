@@ -1,8 +1,11 @@
+import 'package:cliques_and_households/models/group_model.dart';
 import 'package:flutter/material.dart';
 
 class GroupCard extends StatefulWidget {
+  final Group group;
   const GroupCard({
     super.key,
+    required this.group,
   });
 
   @override
@@ -24,7 +27,7 @@ class _GroupCardState extends State<GroupCard> {
       padding:
           const EdgeInsets.symmetric(horizontal: 16 * 1.5, vertical: 16 * 1.5),
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.grey[300],
         borderRadius: BorderRadius.circular(15),
         border: isDarkMode
             ? Border.all(
@@ -41,23 +44,23 @@ class _GroupCardState extends State<GroupCard> {
             radius: 25,
             backgroundColor: Theme.of(context).colorScheme.primary,
             backgroundImage: AssetImage(
-              "assets/images/greg-rosenke-2OrOt0QyNDk-unsplash.jpg",
+              widget.group.utilities == null
+                  ? "assets/images/clique.jpg"
+                  : "assets/images/greg-rosenke-2OrOt0QyNDk-unsplash.jpg",
             ),
           ),
-
-          // ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Try",
+                "Members: ${widget.group.members.length}",
                 style: Theme.of(context).textTheme.labelSmall,
               ),
               const SizedBox(
                 height: 8,
               ),
               Text(
-                "Try",
+                widget.group.groupName,
                 style: Theme.of(context).textTheme.headlineMedium,
                 maxLines: 1,
                 // minFontSize: 12,
