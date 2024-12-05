@@ -1,6 +1,7 @@
-import 'package:cliques_and_households/models/users.dart';
-import 'package:cliques_and_households/models/group_transactions.dart';
-import 'package:cliques_and_households/screens/account_card.dart';
+import 'package:cliques_and_households/models/clique.dart';
+import 'package:cliques_and_households/models/group_model.dart';
+import 'package:cliques_and_households/models/household.dart';
+import 'package:cliques_and_households/widgets/groupCard.dart';
 import 'package:cliques_and_households/screens/expanded_clique.dart';
 import 'package:cliques_and_households/screens/expanded_household.dart';
 import 'package:cliques_and_households/widgets/clique_banner.dart';
@@ -16,13 +17,30 @@ class CliquesAndHousholds extends StatefulWidget {
 }
 
 class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
-  List<Clique> cliques = [Clique()];
-  List<Household> households = [Household()];
+  List<Group> groups = [
+    Group(
+        groupId: "groupId",
+        members: [],
+        transactions: [],
+        groupName: "Rock On"),
+    Group(
+        groupId: "groupId",
+        members: [],
+        groupName: "My Home",
+        transactions: [],
+        utilities: List.empty())
+  ];
 
   @override
   void initState() {
     super.initState();
   }
+
+  List<Group> get cliques =>
+      groups.where((group) => group.utilities == null).toList();
+
+  List<Group> get households =>
+      groups.where((group) => group.utilities != null).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +117,9 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
                                         const ExpandedClique(),
                                   ));
                             },
-                            child: AccountCard());
+                            child: GroupCard(
+                              group: cliques[index],
+                            ));
                       },
                     ),
             ),
@@ -137,7 +157,9 @@ class _CliquesAndHousholdsState extends State<CliquesAndHousholds> {
                                         const ExpandedHousehold(),
                                   ));
                             },
-                            child: AccountCard());
+                            child: GroupCard(
+                              group: households[index],
+                            ));
                       },
                     ),
             ),

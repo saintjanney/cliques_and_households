@@ -1,21 +1,18 @@
-import 'package:cliques_and_households/models/users.dart';
-import 'package:cliques_and_households/models/group_transactions.dart';
-import 'package:cliques_and_households/screens/expanded_clique.dart';
-import 'package:cliques_and_households/widgets/custom_logo_icon.dart';
+import 'package:cliques_and_households/models/group_model.dart';
 import 'package:flutter/material.dart';
 
-class AccountCard extends StatefulWidget {
-  const AccountCard({
+class GroupCard extends StatefulWidget {
+  final Group group;
+  const GroupCard({
     super.key,
+    required this.group,
   });
 
   @override
-  State<AccountCard> createState() => _AccountCardState();
+  State<GroupCard> createState() => _GroupCardState();
 }
 
-class _AccountCardState extends State<AccountCard> {
-  Color? _dominantColor;
-
+class _GroupCardState extends State<GroupCard> {
   @override
   void initState() {
     super.initState();
@@ -27,13 +24,10 @@ class _AccountCardState extends State<AccountCard> {
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.45,
-      padding: const EdgeInsets.symmetric(
-          horizontal: 16 * 1.5, vertical: 16 * 1.5),
+      padding:
+          const EdgeInsets.symmetric(horizontal: 16 * 1.5, vertical: 16 * 1.5),
       decoration: BoxDecoration(
-        color: _dominantColor ??
-            (isDarkMode
-                ? Theme.of(context).colorScheme.surface
-                : Theme.of(context).colorScheme.onPrimaryContainer),
+        color: Colors.grey[300],
         borderRadius: BorderRadius.circular(15),
         border: isDarkMode
             ? Border.all(
@@ -46,23 +40,27 @@ class _AccountCardState extends State<AccountCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const CustomLogoIcons(
-            imageUrl: "https://placehold.co/50x50",
-            height: 50,
-            width: 50,
+          CircleAvatar(
+            radius: 25,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundImage: AssetImage(
+              widget.group.utilities == null
+                  ? "assets/images/clique.jpg"
+                  : "assets/images/greg-rosenke-2OrOt0QyNDk-unsplash.jpg",
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Try",
+                "Members: ${widget.group.members.length}",
                 style: Theme.of(context).textTheme.labelSmall,
               ),
               const SizedBox(
                 height: 8,
               ),
               Text(
-                "Try",
+                widget.group.groupName,
                 style: Theme.of(context).textTheme.headlineMedium,
                 maxLines: 1,
                 // minFontSize: 12,

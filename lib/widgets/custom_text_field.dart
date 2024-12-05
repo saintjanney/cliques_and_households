@@ -17,7 +17,7 @@ class CustomTextField extends StatelessWidget {
                   Icons.search,
                 )
               : isPercentage
-                  ? Icon(Icons.percent)
+                  ? const Icon(Icons.percent)
                   : null,
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
