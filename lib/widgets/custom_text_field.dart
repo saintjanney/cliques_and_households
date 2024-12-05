@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   String? hint;
   bool isLookup;
-  CustomTextField({super.key, this.hint, this.isLookup = false});
+  bool isPercentage;
+  CustomTextField(
+      {super.key, this.hint, this.isLookup = false, this.isPercentage = false});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,9 @@ class CustomTextField extends StatelessWidget {
               ? Icon(
                   Icons.search,
                 )
-              : null,
+              : isPercentage
+                  ? Icon(Icons.percent)
+                  : null,
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
           )),
