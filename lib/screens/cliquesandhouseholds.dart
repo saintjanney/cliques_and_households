@@ -1,5 +1,5 @@
-import 'package:cliques_and_households/models/clique.dart';
-import 'package:cliques_and_households/models/household.dart';
+import 'package:cliques_and_households/models/users.dart';
+import 'package:cliques_and_households/models/group_transactions.dart';
 import 'package:cliques_and_households/screens/account_card.dart';
 import 'package:cliques_and_households/screens/expanded_clique.dart';
 import 'package:cliques_and_households/screens/expanded_household.dart';
