@@ -17,6 +17,7 @@ class CreateGroup extends StatefulWidget {
 
 class _CreateGroupState extends State<CreateGroup> {
   final GroupService groupService = GroupService();
+  bool isLoading = false;
   int _selectedIndex = 0;
   late TextEditingController _groupNameController;
   late TextEditingController _searchController;
@@ -205,7 +206,7 @@ class _CreateGroupState extends State<CreateGroup> {
               ),
               const Spacer(),
               InkWell(
-                onTap: () {
+                onTap: () async {
                   if (_groupNameController.text.isEmpty) {
                     showDialog(
                         context: context,
@@ -224,12 +225,21 @@ class _CreateGroupState extends State<CreateGroup> {
                         });
                     return;
                   } else {
-                    groupService.createGroup(Group(
-                        groupId: uuid.v4(),
-                        groupName: _groupNameController.text,
-                        transactions: [],
-                        utilities: _selectedIndex == 0 ? null : [],
-                        members: members));
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await groupService
+                        .createGroup(Group(
+                            groupId: uuid.v4(),
+                            groupName: _groupNameController.text,
+                            transactions: [],
+                            utilities: _selectedIndex == 0 ? null : [],
+                            members: members))
+                        .whenComplete(() {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    });
                   }
                 },
                 child: Container(
@@ -241,10 +251,12 @@ class _CreateGroupState extends State<CreateGroup> {
                       // color: const Color.fromRGBO(226, 233, 240, 1)
                       ),
                   alignment: Alignment.center,
-                  child: const Text(
-                    "Create Group",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  child: isLoading
+                      ? CircularProgressIndicator.adaptive()
+                      : const Text(
+                          "Create Group",
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ),
               SizedBox(
