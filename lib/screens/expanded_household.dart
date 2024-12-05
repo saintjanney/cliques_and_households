@@ -1,11 +1,9 @@
-import 'package:cliques_and_households/widgets/custom_button.dart';
 import 'package:cliques_and_households/widgets/custom_sliver_appbar.dart';
 import 'package:cliques_and_households/widgets/kowri_protect_list_component.dart';
-import 'package:cliques_and_households/widgets/make_payment_bottomsheet.dart';
 import 'package:flutter/material.dart';
 
-class ExpandedClique extends StatelessWidget {
-  const ExpandedClique({super.key});
+class ExpandedHousehold extends StatelessWidget {
+  const ExpandedHousehold({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +17,8 @@ class ExpandedClique extends StatelessWidget {
           decoration: const BoxDecoration(
               color: Colors.blue,
               image: DecorationImage(
-                opacity: 0.8,
-                  image: AssetImage("assets/images/clique.jpg"),
+                  image: AssetImage(
+                      "assets/images/greg-rosenke-2OrOt0QyNDk-unsplash.jpg"),
                   fit: BoxFit.cover)),
           child: Stack(
             children: [
@@ -30,17 +28,11 @@ class ExpandedClique extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    )),
+                    child: const Icon(Icons.arrow_back)),
               ),
-              const Align(
+              Align(
                   alignment: Alignment(-1, 0.625),
-                  child: Text(
-                    "Clique Members",
-                    style: TextStyle(color: Colors.white),
-                  )),
+                  child: Text("Household Members")),
               Align(
                 alignment: const Alignment(0, 0.9),
                 child: Row(
@@ -53,7 +45,7 @@ class ExpandedClique extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(12)),
-                          child: const Row(
+                          child: Row(
                             children: [
                               Icon(Icons.person),
                               SizedBox(
@@ -76,11 +68,11 @@ class ExpandedClique extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(
+        SizedBox(
           height: 24,
         ),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Text("Transaction History"),
         ),
         Expanded(
@@ -90,24 +82,30 @@ class ExpandedClique extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: Text("${index + 1}"),
-                  title: const Text("Saint"),
                 );
               }),
         ),
-        CustomButton(
-            buttonText: "Make Payment",
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
             onTap: () {
-              showModalBottomSheet(
-                  constraints: BoxConstraints(
-                      maxHeight: MediaQuery.sizeOf(context).height * 0.85),
-                  isScrollControlled: true,
-                  backgroundColor: Colors.white,
-                  showDragHandle: true,
-                  context: context,
-                  builder: (context) {
-                    return MakePaymentBottomsheet();
-                  });
-            }),
+              // groupService.createGroup();
+            },
+            child: Container(
+              height: 48,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12), color: Colors.green
+                  // color: const Color.fromRGBO(226, 233, 240, 1)
+                  ),
+              alignment: Alignment.center,
+              child: const Text(
+                "Make Group Payment",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ),
         SizedBox(
           height: 40,
         )

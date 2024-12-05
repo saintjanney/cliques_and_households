@@ -25,62 +25,52 @@ class _AccountCardState extends State<AccountCard> {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => const ExpandedClique(),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
+      padding: const EdgeInsets.symmetric(
+          horizontal: 16 * 1.5, vertical: 16 * 1.5),
+      decoration: BoxDecoration(
+        color: _dominantColor ??
+            (isDarkMode
+                ? Theme.of(context).colorScheme.surface
+                : Theme.of(context).colorScheme.onPrimaryContainer),
+        borderRadius: BorderRadius.circular(15),
+        border: isDarkMode
+            ? Border.all(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
+                width: 1,
+              )
+            : null,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const CustomLogoIcons(
+            imageUrl: "https://placehold.co/50x50",
+            height: 50,
+            width: 50,
           ),
-        );
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.45,
-        padding: const EdgeInsets.symmetric(
-            horizontal: 16 * 1.5, vertical: 16 * 1.5),
-        decoration: BoxDecoration(
-          color: _dominantColor ??
-              (isDarkMode
-                  ? Theme.of(context).colorScheme.surface
-                  : Theme.of(context).colorScheme.onPrimaryContainer),
-          borderRadius: BorderRadius.circular(15),
-          border: isDarkMode
-              ? Border.all(
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
-                  width: 1,
-                )
-              : null,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const CustomLogoIcons(
-              imageUrl: "https://placehold.co/50x50",
-              height: 50,
-              width: 50,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Try",
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  "Try",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  maxLines: 1,
-                  // minFontSize: 12,
-                  overflow: TextOverflow.ellipsis,
-                )
-              ],
-            )
-          ],
-        ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Try",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                "Try",
+                style: Theme.of(context).textTheme.headlineMedium,
+                maxLines: 1,
+                // minFontSize: 12,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          )
+        ],
       ),
     );
   }
