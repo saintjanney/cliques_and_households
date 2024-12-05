@@ -112,7 +112,6 @@ class GroupService {
             utilities: utilities,
             transactions: transactions));
 
-  
       }
       return toReturn;
     } catch (e) {
